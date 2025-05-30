@@ -1,0 +1,46 @@
+V and Inverse V are formed by looking at the Highs and Lows
+
+Engulfings are formed when Open and Close of Current candle are covering COMPLETELY the High to Low of previous
+
+Look for Bullish (V, Bullish Engulfing) pattern at the END of DOWNWARD Trend (Short DOWNWARD Trend When the overall trend is upward, it'll give benefit) as market might go up
+
+
+Look for Bearish; (Inverted V, Bearish Engulfing pattern) at the END of Upward Trend (Short Upward Trend When the overall trend is down, it'll give benefit) as market might go down
+
+
+______________________________________________________________________________________________
+
+
+Take every Opportunity (IFF satisfying risk, budget and breakout conditions) mostly COUNTER RETAILER Trades :->
+
+Check for a Sideway Zone i.e Atleast 2 Support and 2 Resistance tests with max 1 candle breaking the zone.
+
+
+If not a sideways zone, then look for 2+ either support or Resistance line. For example Overall growth is in upward trend and you find a resistance line with 2+ attempts, the moment it breaks that line, go long (buy).
+
+____________________________________________________________________________________________
+
+
+1. 11 - 15 Stocks
+2. Min 8% to Max 20% per share
+3. Sectoral {Get the NIFTY- {Sector} file and check whhere you can buy. Which Sectors are eligible)
+4. Trade With Nifty Only 50 > 100 > 200 > 500
+5. Rising 44 + Profit Making Companies + Loss debt
+6. Total risk should be enough to be handled for 15 successive such losses
+7. Weekly AND Daily Moving 44 in uptrend only
+8. Buy multiple in the same Trend. Pyramiding + 2:1 will collectively give you the overall profit. (4*2) profit (6*1) loss with additional benifit of pyramiding == overall profit
+9. Buying candle should not be too big
+
+
+___________________________________________________
+1. If there's a Red Below MA + Doji after that and a Green candle above, you can think of buying
+2. Look for Big Green / Red on the Average line or support line as a good indicator
+
+______________________________________________________________________________________________________
+
+
+Do not buy when Stock is near the upper band of a channel as it is over extended already.
+
+TRIX and Stochastic RSI tend to support shorter time frame better
+
+Oscillators works best for Choppy or range bound market. So is ADX is less than 25, you might want to trade on oscillators else use them as a tool to get extra confirmation signals. Using patterns with Oscillators is better.
