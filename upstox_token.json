@@ -1,0 +1,28 @@
+{
+    "email": "mdsahilirsad@gmail.com",
+    "exchanges": [
+        "BSE",
+        "NSE"
+    ],
+    "products": [
+        "OCO",
+        "D",
+        "CO",
+        "I"
+    ],
+    "broker": "UPSTOX",
+    "user_id": "7TBUJQ",
+    "user_name": "MD IRSAD",
+    "order_types": [
+        "MARKET",
+        "LIMIT",
+        "SL",
+        "SL-M"
+    ],
+    "user_type": "individual",
+    "poa": false,
+    "ddpi": false,
+    "is_active": true,
+    "access_token": "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiI3VEJVSlEiLCJqdGkiOiI2ODNiMjYwZmNmMjkyZTc5N2E3MWZjMmEiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6ZmFsc2UsImlhdCI6MTc0ODcwNjgzMSwiaXNzIjoidWRhcGktZ2F0ZXdheS1zZXJ2aWNlIiwiZXhwIjoxNzQ4NzI4ODAwfQ.D6UIbGI0eep9VOTjpsvrjNCTZ4-_PaGLUQDdffQyf4c",
+    "extended_token": null
+}

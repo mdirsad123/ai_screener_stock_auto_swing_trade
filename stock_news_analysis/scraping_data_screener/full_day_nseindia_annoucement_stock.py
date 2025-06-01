@@ -39,7 +39,8 @@ def fetch_announcements(driver, seen_headlines=None):
     logger.info("🚀 Opened BSE India announcement page")
 
     # Step 1: Calculate yesterday's date in dd/mm/yyyy
-    yesterday = (date.today() - timedelta(days=1)).strftime("%d/%m/%Y")
+    yesterday = (date.today() - timedelta(days=0)).strftime("%d/%m/%Y")
+    # import pdb; pdb.set_trace()  # Debugging breakpoint
 
     # Step 2: Locate and set date using JavaScript
     from_date_field = wait.until(EC.presence_of_element_located((By.ID, "txtFromDt")))
