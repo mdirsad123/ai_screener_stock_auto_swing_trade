@@ -2,14 +2,8 @@
 python -m stock_news_analysis.scraping_data_screener.chart_pattern_scrap
 """
 
-import re
-import os
 import time
-from datetime import datetime, date, timedelta
 import pandas as pd
-from pathlib import Path
-from bs4 import BeautifulSoup
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from collections import defaultdict
@@ -18,29 +12,11 @@ from selenium.common.exceptions import TimeoutException
 from utility.debbuger_port_driver import get_driver
 from utility.my_automation_logger import get_logger
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from stock_news_analysis.analysis.read_latest_csv import load_latest_positive_data
+from stock_news_analysis.analysis.data_save_csv import save_to_csv_chart_ind
 
 # Configuration
 logger = get_logger('screener_announcements')
-today_str = date.today().isoformat()
-CSV_FILE = Path(__file__).resolve().parent.parent / "output" / "chart_pattern_detect" / f"chart_pattern_{today_str}.csv"
-
-def load_latest_data():
-    """Load the latest CSV file from the output directory and filter by datetime range."""
-    output_dir = os.path.join("stock_news_analysis", "output")
-    if not os.path.exists(output_dir):
-        return None
-
-    files = [f for f in os.listdir(output_dir) if f.endswith('.csv')]
-    if not files:
-        return None
-
-    latest_file = max(files, key=lambda x: os.path.getctime(os.path.join(output_dir, x)))
-    df = pd.read_csv(os.path.join(output_dir, latest_file))
-
-    return df
-
-
-# Load logger and selenium driver, define load_latest_data() earlier
 
 # Common fetch function
 def fetch_single_url(driver, companies, url, label):
@@ -78,7 +54,7 @@ def fetch_single_url(driver, companies, url, label):
 
 def fetch_parallel_chartink(driver, companies, url_label_dict):
     all_results = defaultdict(list)
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    with ThreadPoolExecutor(max_workers=3) as executor:
         futures = {
             executor.submit(fetch_single_url, driver, companies, url, label): label
             for url, label in url_label_dict.items()
@@ -90,9 +66,14 @@ def fetch_parallel_chartink(driver, companies, url_label_dict):
     return all_results
 
 def fetch_all_patterns_and_indicators(driver):
-    df = load_latest_data()
-    if df is None or 'Company' not in df.columns:
-        print("Error loading data or missing 'Company' column")
+    df = load_latest_positive_data()
+
+    if df is None or df.empty:
+        print("✅ No new positive sentiment data to process.")
+        return pd.DataFrame()
+
+    if 'Company' not in df.columns:
+        print("❌ 'Company' column missing in the data.")
         return pd.DataFrame()
 
     companies = df['Company'].dropna().unique().tolist()
@@ -123,25 +104,13 @@ def fetch_all_patterns_and_indicators(driver):
     df['Tech_Indicator'] = df['Company'].apply(lambda x: ', '.join(indicator_results.get(x, [])))
     return df
 
-def save_to_csv_chart_ind(df):
-    CSV_FILE.parent.mkdir(parents=True, exist_ok=True)
-
-    try:
-        if CSV_FILE.exists() and CSV_FILE.stat().st_size > 0:
-            df_existing = pd.read_csv(CSV_FILE)
-            df_combined = pd.concat([df_existing, df], ignore_index=True)
-            df_combined.drop_duplicates(subset=["Company", "Headline", "Chart_Pattern", "Tech_Indicator"], keep="last", inplace=True)
-            df_combined.to_csv(CSV_FILE, index=False)
-            logger.info(f"✅ Updated existing CSV with {len(df)} new/updated rows: {CSV_FILE.name}")
-        else:
-            df.to_csv(CSV_FILE, index=False)
-            logger.info(f"✅ Created new CSV with {len(df)} rows: {CSV_FILE.name}")
-    except Exception as e:
-        logger.error(f"❌ Error saving CSV: {e}")
-
 if __name__ == "__main__":
     driver = get_driver()
+    start = time.time()
     data = fetch_all_patterns_and_indicators(driver)
-    print(data)
+    # print(data)
     save_to_csv_chart_ind(data)
+    end = time.time()
+    logger.info(f"✅ All New Data Processed in {end - start:.2f} seconds")
+
     driver.quit()

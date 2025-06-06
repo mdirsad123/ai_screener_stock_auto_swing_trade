@@ -36,23 +36,39 @@ def get_instrument_token(symbol, exchange="NSE"):
     else:
         raise ValueError(f"❌ Instrument for symbol '{symbol}' not found.")
 
-def get_ltp(symbol, exchange="NSE"):
+def get_ltp(symbol, exchange="NSE", interval="1d"):
     try:
-        instrument_token = get_instrument_token(symbol, exchange)  # e.g., "NSE_EQ|INE848E01016"
-        url = f"https://api.upstox.com/v2/market-quote/ohlc?instrument_key={instrument_token}"
+        # Get instrument_key like NSE_EQ|INE848E01016
+        instrument_key = get_instrument_token(symbol, exchange)
 
-        response = requests.get(url, headers=auth_headers)
+        url = "https://api.upstox.com/v2/market-quote/ohlc"
+        params = {
+            "instrument_key": instrument_key,
+            "interval": interval
+        }
+        headers = {
+            "Accept": "application/json",
+            "Authorization": f"Bearer {access_token}"
+        }
+
+        response = requests.get(url, headers=headers, params=params)
         if response.status_code == 200:
             data = response.json()
-            if 'data' in data and instrument_token in data['data']:
-                return data['data'][instrument_token]['last_price']
+            if "data" in data:
+                # Search for the key dynamically from response
+                for key, value in data["data"].items():
+                    if value.get("instrument_token") == instrument_key:
+                        return value.get("last_price")
+                raise Exception(f"⚠️ Instrument token '{instrument_key}' not found in response keys.")
             else:
-                raise Exception(f"⚠️ Instrument data not found in response: {data}")
+                raise Exception(f"⚠️ Unexpected response format: {data}")
         else:
             raise Exception(f"❌ Failed to fetch LTP: {response.status_code} {response.text}")
+
     except Exception as e:
         print(str(e))
         return None
+
 
 def place_gtt_order_by_symbol(symbol, entry_price, target_price, stoploss_price, quantity=1,
                                transaction_type="BUY", exchange="NSE", product="D"):
@@ -129,22 +145,22 @@ def place_gtt_order_by_symbol_percent(symbol, target_percent, stoploss_percent, 
 
 if __name__ == "__main__":
     # Place fixed price GTT order
-    place_gtt_order_by_symbol(
-        symbol="IDEA",
-        entry_price=2.57,
-        target_price=2.60,
-        stoploss_price=2.55,
-        quantity=1
-    )
-
-    # Place GTT order using percentage target and stoploss
-    # place_gtt_order_by_symbol_percent(
-    #     symbol="IDEA",
-    #     target_percent=10,
-    #     stoploss_percent=3,
+    # place_gtt_order_by_symbol(
+    #     symbol="PFOCUS",
+    #     entry_price=114.00,
+    #     target_price=120.00,
+    #     stoploss_price=110.00,
     #     quantity=1
     # )
-    # entry_price = get_ltp(symbol="IDEA", exchange="NSE")
-    # print(f"📈 Current LTP for IDEA: ₹{entry_price}")
-    # instrument_token = get_instrument_token(symbol="IDEA", exchange="NSE")
-    # print(f"🔑 Instrument token for IDEA: {instrument_token}")
+
+    # Place GTT order using percentage target and stoploss
+    place_gtt_order_by_symbol_percent(
+        symbol="PFOCUS",
+        target_percent=10,
+        stoploss_percent=3,
+        quantity=1
+    )
+    # entry_price = get_ltp(symbol="PFOCUS", exchange="NSE")
+    # print(f"📈 Current LTP for PFOCUS: ₹{entry_price}")
+    # instrument_token = get_instrument_token(symbol="PFOCUS", exchange="NSE")
+    # print(f"🔑 Instrument token for PFOCUS: {instrument_token}")

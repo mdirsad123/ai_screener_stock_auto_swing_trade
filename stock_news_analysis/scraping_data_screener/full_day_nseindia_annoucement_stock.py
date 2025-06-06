@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from concurrent.futures import ProcessPoolExecutor
 from datetime import timedelta
-from stock_news_analysis.analysis.preprocess import advanced_clean_extracted_text
+from stock_news_analysis.analysis.clean_extracted_text import advanced_clean_extracted_text
 from stock_news_analysis.analysis.extract_text_from_pdf import extract_text_from_bse_pdf
 from stock_news_analysis.analysis.sentiment_analysis import analyze_sentiment
 from utility.debbuger_port_driver import get_driver
@@ -73,7 +73,7 @@ def fetch_announcements(driver, seen_headlines=None):
     submit_button = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmit")))
     time.sleep(0.5)
     submit_button.click()
-
+ 
     submit_button = wait.until(EC.element_to_be_clickable(
         (By.XPATH, "//div[@class='col-lg-2 text-left']//input[@type='submit' and @value='Submit']")
     ))

@@ -2,13 +2,12 @@
 python -m stock_news_analysis.analysis.extract_text_from_pdf
 """
 
+import re
 import requests
 import fitz  # PyMuPDF
 import io
-
+import xml.etree.ElementTree as ET
 import requests
-import fitz  # PyMuPDF
-import io
 from transformers import pipeline
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
@@ -28,7 +27,7 @@ def extract_text_from_bse_pdf(url: str) -> str:
     """
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-        "Referer": "https://www.bseindia.com/"
+        "Referer": "https://www.nseindia.com/"
     }
 
     response = requests.get(url, headers=headers)
@@ -44,40 +43,49 @@ def extract_text_from_bse_pdf(url: str) -> str:
 
     return full_text
 
-def summarize_text(text: str, max_chunk_chars: int = 2000) -> str:
-    """
-    Summarizes long text in chunks using a transformer model.
+def extract_text_from_nse_xml(url: str) -> str:
+    # ✅ Auto-correct common domain typos using regex
+    url = re.sub(r"nsearchives\.nse.*?dia\.co+m", "nsearchives.nseindia.com", url)
 
-    Parameters:
-        text (str): The full extracted text.
-        max_chunk_chars (int): Max characters per chunk.
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Referer": "https://www.nseindia.com/"
+    }
 
-    Returns:
-        str: Final combined summary.
-    """
-    chunks = [text[i:i+max_chunk_chars] for i in range(0, len(text), max_chunk_chars)]
-    summaries = []
-
-    for chunk in chunks:
-        summary = summarizer(chunk, max_length=130, min_length=30, do_sample=False)
-        summaries.append(summary[0]['summary_text'])
-
-    return " ".join(summaries)
-
-if __name__ == "__main__":
-    url = "https://www.bseindia.com/xml-data/corpfiling/AttachLive/819c4bf5-f4a0-4315-8e5c-ecb6c6165ba0.pdf"
     try:
-        text = extract_text_from_bse_pdf(url)
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        raise ValueError(f"❌ Failed to fetch the file: {e}")
+
+    content_type = response.headers.get("Content-Type", "").lower()
+
+    if "pdf" in content_type:
+        pdf_file = fitz.open(stream=io.BytesIO(response.content), filetype="pdf")
+        return "\n".join([page.get_text() for page in pdf_file])
+
+    elif "xml" in content_type:
+        try:
+            tree = ET.ElementTree(ET.fromstring(response.content))
+            root = tree.getroot()
+            return "\n".join([
+                elem.text.strip()
+                for elem in root.iter()
+                if elem.text and elem.text.strip()
+            ])
+        except ET.ParseError as e:
+            raise ValueError(f"❌ Failed to parse XML content: {e}")
+
+    else:
+        raise ValueError(f"❌ Unsupported content type: {content_type}")
+if __name__ == "__main__":
+    url = "https://nsearchives.nseinndia.com/corporate/xbrl/PRIOR_INTIMATION_57604_1463186_05062025115804_WEB.xml"
+    try:
+        # text = extract_text_from_bse_pdf(url)
+        text = extract_text_from_nse_xml(url)
         print("📝befor Summary:")
-        print(text[500:5000])
-        summary = summarize_text(text)
-        print("📝 after Summary:")
-        print(summary)
-
-        # Optionally: Run your sentiment analyzer here
-        # sentiment, label = analyze_sentiment(summary)
-        # print("🔍 Sentiment:", label)
-
+        print(text[300:5000])
+        
     except ValueError as e:
         print("Failed to extract PDF:", e)
 

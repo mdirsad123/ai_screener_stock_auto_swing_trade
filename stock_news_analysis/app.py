@@ -16,6 +16,8 @@ import plotly.graph_objects as go
 from datetime import timedelta
 import seaborn as sns
 import matplotlib.pyplot as plt
+from analysis.read_latest_csv import load_latest_data_output_sentiment
+from analysis.read_latest_csv import load_latest_data_output_chart_ind
 
 # Set page config
 st.set_page_config(
@@ -28,7 +30,7 @@ def run_screener():
     """Run the daily screener script"""
     try:
         venv_python = r"D:\Stock_market\NSE-Stock-Scanner\.venv\Scripts\python.exe"
-        subprocess.run([venv_python, "-m", "stock_news_analysis.scraping_data_screener.daily_nseindia_annoucement_stock"], check=True)
+        subprocess.run([venv_python, "-m", "stock_news_analysis.main"], check=True)
         return True
     except Exception as e:
         st.error(f"Error running screener: {e}")
@@ -39,22 +41,6 @@ def schedule_screener():
     while True:
         schedule.run_pending()
         time.sleep(1)
-
-def load_latest_data():
-    """Load the latest CSV file from the output directory and filter by datetime range."""
-    output_dir = os.path.join("stock_news_analysis", "output", "chart_pattern_detect")
-    if not os.path.exists(output_dir):
-        return None
-
-    files = [f for f in os.listdir(output_dir) if f.endswith('.csv')]
-    if not files:
-        return None
-
-    latest_file = max(files, key=lambda x: os.path.getctime(os.path.join(output_dir, x)))
-    df = pd.read_csv(os.path.join(output_dir, latest_file))
-
-    return df
-
 
 def create_sentiment_chart(df):
     """Create an interactive sentiment distribution chart"""
@@ -138,7 +124,7 @@ def main():
     # Sidebar controls
     st.sidebar.header("Controls")
     auto_refresh = st.sidebar.checkbox("Auto-refresh dashboard every 5 minutes", value=True)
-    auto_screener = st.sidebar.checkbox("Run screener every 2 minutes", value=False)
+    auto_screener = st.sidebar.checkbox("Run screener every 10 minutes", value=False)
 
     # Session state
     if 'last_data' not in st.session_state:
@@ -161,13 +147,13 @@ def main():
             st.session_state.next_run_time = datetime.now() + timedelta(minutes=2)
 
         st.session_state.next_run_time = datetime.now() + timedelta(minutes=2)
-        schedule.every(2).minutes.do(run_screener_with_timer)
+        schedule.every(10).minutes.do(run_screener_with_timer)
 
         scheduler_thread = threading.Thread(target=schedule_screener, daemon=True)
         scheduler_thread.start()
 
         st.session_state.scheduler_running = True
-        st.sidebar.success("Screener scheduled to run every 2 minutes")
+        st.sidebar.success("Screener scheduled to run every 10 minutes")
 
     elif not auto_screener and st.session_state.scheduler_running:
         schedule.clear()
@@ -189,15 +175,16 @@ def main():
 
    
  # ---------------------------------------------------------------
-    df = load_latest_data()
+    df_sentiment_data = load_latest_data_output_sentiment()
+    df_chart_ind_data = load_latest_data_output_chart_ind()
     view = st.sidebar.radio("Select View", ["Sentiment", "Chart Patterns", "Technical Indicators", "Smart Trade Signals"])
 
     if view == "Sentiment":
     # show sentiment charts and tables
-        total_announcements = len(df) if df is not None else 0
+        total_announcements = len(df_sentiment_data) if df_sentiment_data is not None else 0
         st.subheader(f'Total {total_announcements} Latest Announcements')
-        if df is not None:
-            df_processed = process_sentiment(df)
+        if df_sentiment_data is not None:
+            df_processed = process_sentiment(df_sentiment_data)
             st.session_state.last_data = df_processed
             st.session_state.last_update = datetime.now()
             st.dataframe(
@@ -233,7 +220,7 @@ def main():
         categories = ["Very Positive", "Positive", "Neutral", "Negative", "Very Negative"]
 
         for sentiment in categories:
-            df_s = df[df['final_sentiment'] == sentiment]
+            df_s = df_sentiment_data[df_sentiment_data['final_sentiment'] == sentiment]
             if not df_s.empty:
                 df_s = df_s[['Company', 'Headline', 'Time', 'confidence']].copy()
                 df_s = df_s.sort_values('confidence', ascending=False)
@@ -268,7 +255,7 @@ def main():
         }
 
         # Count sentiments
-        sentiment_counts = df['final_sentiment'].value_counts().reset_index()
+        sentiment_counts = df_sentiment_data['final_sentiment'].value_counts().reset_index()
         sentiment_counts.columns = ['Sentiment', 'Count']
 
         # Create pie chart with custom color map
@@ -288,7 +275,7 @@ def main():
     # ------------------------------------------------------------------------------------------
 
         # Bar Chart: Top Companies by Positive News
-        positive_df = df[df['final_sentiment'].isin(['Very Positive', 'Positive'])]
+        positive_df = df_sentiment_data[df_sentiment_data['final_sentiment'].isin(['Very Positive', 'Positive'])]
         top_companies = positive_df['Company'].value_counts().nlargest(10).reset_index()
         top_companies.columns = ['Company', 'Positive News Count']
         fig_bar = px.bar(top_companies, x='Company', y='Positive News Count',
@@ -296,9 +283,9 @@ def main():
         st.plotly_chart(fig_bar, use_container_width=True)
         
 # ---------------------------------------------------------------------------------------------------------
- 
+    
     elif view == "Chart Patterns":
-        df_chart = df[['Company', 'Chart_Pattern']].dropna()
+        df_chart = df_chart_ind_data[['Company', 'Chart_Pattern']].dropna()
         df_chart = df_chart.assign(Patterns=df_chart['Chart_Pattern'].str.split(', ')).explode('Patterns')
         st.dataframe(df_chart)
 
@@ -314,7 +301,7 @@ def main():
         st.write(f"Companies with {selected_pattern} pattern:")
         st.dataframe(filtered_df)
 
-        df_combo = df[['Chart_Pattern', 'final_sentiment']].dropna()
+        df_combo = df_chart_ind_data[['Chart_Pattern', 'final_sentiment']].dropna()
         df_combo = df_combo.assign(Patterns=df_combo['Chart_Pattern'].str.split(', ')).explode('Patterns')
         pattern_sentiment = df_combo.groupby(['Patterns', 'final_sentiment']).size().unstack(fill_value=0)
         st.dataframe(pattern_sentiment)
@@ -336,7 +323,7 @@ def main():
         st.subheader("Technical Indicators Analysis")
 
         # Preprocess data
-        df_ind = df[['Company', 'Tech_Indicator']].dropna()
+        df_ind = df_chart_ind_data[['Company', 'Tech_Indicator']].dropna()
         df_ind = df_ind.assign(Indicators=df_ind['Tech_Indicator'].str.split(', ')).explode('Indicators')
 
         # Show raw data
@@ -362,12 +349,9 @@ def main():
 
         # Correlation with final sentiment
         st.markdown("### 🔗 Correlation with Sentiment")
-        df_ind_sent = df[['Tech_Indicator', 'final_sentiment']].dropna()
+        df_ind_sent = df_chart_ind_data[['Tech_Indicator', 'final_sentiment']].dropna()
         df_ind_sent = df_ind_sent.assign(Indicators=df_ind_sent['Tech_Indicator'].str.split(', ')).explode('Indicators')
         ind_sentiment = df_ind_sent.groupby(['Indicators', 'final_sentiment']).size().unstack(fill_value=0)
-
-        import seaborn as sns
-        import matplotlib.pyplot as plt
 
         fig2, ax = plt.subplots()
         sns.heatmap(ind_sentiment, annot=True, fmt='d', cmap='Greens', ax=ax)
@@ -383,7 +367,7 @@ def main():
     elif view == "Smart Trade Signals":
         st.subheader("📈 Smart Trade Signals – Multi-signal Strategy")
 
-        df_combo = df.copy()
+        df_combo = df_chart_ind_data.copy()
 
         # Step 1: Sentiment Score
         sentiment_score_map = {'Positive': 2, 'Neutral': 1, 'Negative': 0}
@@ -415,7 +399,7 @@ def main():
 
         # Show columns that matter
         st.markdown("### 🧠 Combined Analysis Results")
-        display_cols = ['Company', 'final_sentiment', 'Chart_Pattern', 'Tech_Indicator', 
+        display_cols = ['Company', 'Time', 'final_sentiment', 'Chart_Pattern', 'Tech_Indicator', 
                         'Sentiment_Score', 'Chart_Count', 'Indicator_Count', 
                         'Total_Score', 'Success_Chance (%)', 'Recommendation']
         
