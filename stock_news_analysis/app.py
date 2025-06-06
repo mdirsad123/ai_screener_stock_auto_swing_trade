@@ -162,11 +162,11 @@ def main():
         st.sidebar.info("Screener scheduling stopped")
 
     # Show countdown timer
-    if st.session_state.scheduler_running and st.session_state.next_run_time:
-        time_left = st.session_state.next_run_time - datetime.now()
-        minutes, seconds = divmod(int(time_left.total_seconds()), 60)
-        if minutes >= 0 and seconds >= 0:
-            st.sidebar.markdown(f"⏳ **Next screener run in:** {minutes:02d}:{seconds:02d} minutes")
+    # if st.session_state.scheduler_running and st.session_state.next_run_time:
+    #     time_left = st.session_state.next_run_time - datetime.now()
+    #     minutes, seconds = divmod(int(time_left.total_seconds()), 60)
+    #     if minutes >= 0 and seconds >= 0:
+    #         st.sidebar.markdown(f"⏳ **Next screener run in:** {minutes:02d}:{seconds:02d} minutes")
 
     # Optional: Auto-refresh the app
     if auto_refresh:
