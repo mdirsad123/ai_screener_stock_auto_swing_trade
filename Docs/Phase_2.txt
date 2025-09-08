@@ -1,0 +1,6 @@
+stock-ai-project/
+│── ai_model/  
+│   ├── lstm_model.py  
+│   ├── transformer_model.py  
+│   ├── train_model.py  
+│   ├── predict.py  

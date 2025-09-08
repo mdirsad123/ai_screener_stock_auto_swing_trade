@@ -1,0 +1,11 @@
+stock-ai-project/
+│── backtesting/  
+│   ├── backtest.py  
+│   ├── strategy.py  
+│   ├── optimize.py  
+│── live_trading/  
+│   ├── zerodha_api.py  
+│   ├── upstox_api.py  
+│── frontend/  
+│   ├── src/  
+│   ├── App.js  

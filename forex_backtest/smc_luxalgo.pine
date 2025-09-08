@@ -1,0 +1,5 @@
+selector = (By.XPATH, "//*[name()='use' and contains(@href,'#attachmen')]")
+        
+        # Wait until upload button is clickable
+        upload_btn = wait.until(EC.element_to_be_clickable(selector))
+        upload_btn.click()

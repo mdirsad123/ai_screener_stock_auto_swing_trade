@@ -1,0 +1,65 @@
+
+https://finnhub.io/register
+email: sahilpython7305@gmail.com
+password: Mdirsad(@)123
+api key: cvhsqhpr01qgkck60mtgcvhsqhpr01qgkck60mu0
+
+-----------------------------------
+upstox api key
+
+upstock api
+api key: a3eec151-9b0b-4800-a57b-961ba50641fc
+api secret: iey3itqbm7
+redirect url: http://localhost:8000/callback
+
+upstock api
+api key: a3eec151-9b0b-4800-a57b-961ba50641fc
+api secret: iey3itqbm7
+redirect url: http://localhost:8000/callback
+
+--------------------------
+
+protean vpn
+email: mdirsa688@gmail.com
+username: mdirsa688@gmail.com
+password: Mdirsad(@)123
+
+---------------------
+
+mamu github py_automation
+token: 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
+
+--------------------
+https://site.financialmodelingprep.com/developer/docs/dashboard
+email: sahilpython7305@gmail.com
+api key: 4VLewLktty3LsWiYxVBylORmEltIXm8G
+
+-----------------------------------------
+POLYGON_KEY
+email: sahilpython7305@gmail.com
+password: Mdirsad(@)123
+api key: 6evX7DgXqKBr2o0G7cOgjewTUqrOHU18
+
+--------------------------------
+https://www.reddit.com/prefs/apps/
+email: sahilpython7305@gmail.com
+client id: IFXQGZ6xQ592MCCZ1izjsA
+secret key: O44yUDEGYNC31zc2M9f6rIuWeCwJuw
+---------------------------
+https://developer.twitter.com/
+email: sahilpython7305@gmail.com
+name: 1917257177208598528mdirsad123
+App id: 30654901
+api key: Db4Q6Bk7xQ26F57reVLsnxM1V
+secret token: de81Y2hvKjIpQ7mroztB9eSfk24I7uEjvOuZ9kjKV6dUGzjGnC
+---------------------------------------
+STOCKSERA_API: RWwTyIxMZSVQAY6KvG475BkcamfWK2mNAPoD7qW5jMo
+--------------------------------------
+gmail app passkey
+https://myaccount.google.com/apppasswords
+gmai: sahilpython7305@gmail.com
+app name: Stocksera
+passkey: akrp esom zffy lcmb
+----------------------------
+stocksera api key
+NEk0RTps.0uwVfW6UtPZjBXUdnoU6YYbdi5Kw1zPU

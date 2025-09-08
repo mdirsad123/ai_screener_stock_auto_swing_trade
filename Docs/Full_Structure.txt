@@ -1,0 +1,34 @@
+stock-ai-project/
+│── backend/  
+│   ├── data_collection/        # (Phase 1) Data Fetching Scripts  
+│   │   ├── fetch_stock_data.py      # Zerodha/Upstox se stock data  
+│   │   ├── fetch_news_sentiment.py  # News & Twitter Sentiment  
+│   │   ├── fetch_fii_dii_data.py    # FII/DII data fetch  
+│   │   ├── fetch_options_data.py    # Options chain data  
+│	│	├── nifty_stock.csv
+│   ├── database/              # (Phase 1) MySQL Database  
+│   │   ├── db_connection.py         # MySQL Connection  
+│   │   ├── save_data.py   
+│	├── analysis/                 # (Phase 2) Data Analysis  
+│	│   │   ├── filter_top_gainers.py     # Stocks 10%+ gainers  
+│	│   │   ├── analyze_patterns.py
+│   ├── api.py                  # (Phase 1) Flask API for Data Access  
+│   ├── main.py                 # (Phase 1) Backend Server  
+│── ai_model/  
+│   ├── lstm_model.py           # (Phase 2) LSTM Model  
+│   ├── transformer_model.py     # (Phase 2) Transformer Model  
+│   ├── train_model.py          # (Phase 2) Training Script  
+│   ├── predict.py              # (Phase 2) Prediction Script  
+│── backtesting/  
+│   ├── backtest.py             # (Phase 3) Backtesting Engine  
+│   ├── strategy.py             # (Phase 3) Trading Strategy  
+│   ├── optimize.py             # (Phase 3) Hyperparameter Tuning  
+│── live_trading/  
+│   ├── zerodha_api.py          # (Phase 3) Zerodha API Integration  
+│   ├── upstox_api.py           # (Phase 3) Upstox API Integration  
+│── frontend/  
+│   ├── src/                    # (Phase 3) React Frontend  
+│   ├── App.js                  # (Phase 3) Live Dashboard  
+│── config.py                    # API keys & DB credentials  
+│── requirements.txt              # Python dependencies  
+│── README.md                     # Project documentation  

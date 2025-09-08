@@ -1,0 +1,15 @@
+stock-ai-project/
+│── backend/  
+│   ├── data_collection/  
+│   │   ├── fetch_stock_data.py  
+│   │   ├── fetch_news_sentiment.py  
+│   │   ├── fetch_fii_dii_data.py  
+│   │   ├── fetch_options_data.py  
+│   ├── database/  
+│   │   ├── db_connection.py  
+│   │   ├── save_data.py  
+│   ├── api.py  
+│   ├── main.py  
+│── config.py  
+│── requirements.txt  
+│── README.md  

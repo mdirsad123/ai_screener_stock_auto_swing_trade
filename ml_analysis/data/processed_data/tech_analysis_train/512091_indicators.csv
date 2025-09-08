@@ -1,0 +1,25 @@
+Date,Code,Name,Open,High,Low,Close,Volume,Turnover,SMA_20,EMA_20,RSI,MACD,MACD_signal,ADX,CMF,Supertrend
+2025-03-27,512091,Nibe Ordnance and Maritime Lim,4.02,4.02,4.02,4.02,1,4.0,,4.02,,,,,,True
+2025-03-28,512091,Nibe Ordnance and Maritime Lim,4.1,4.1,4.1,4.1,1,4.0,,4.062,,,,,,True
+2025-04-01,512091,Nibe Ordnance and Maritime Lim,4.18,4.18,4.18,4.18,1,4.0,,4.105328892589509,,,,,,True
+2025-04-02,512091,Nibe Ordnance and Maritime Lim,4.26,4.26,4.26,4.26,1,4.0,,4.149980049875312,,,,,,True
+2025-04-03,512091,Nibe Ordnance and Maritime Lim,4.34,4.34,4.34,4.34,1,4.0,,4.195944258775798,,,,,,True
+2025-04-04,512091,Nibe Ordnance and Maritime Lim,4.42,4.42,4.42,4.42,1,4.0,,4.243209785889758,,,,,,True
+2025-04-08,512091,Nibe Ordnance and Maritime Lim,4.5,4.5,4.5,4.5,2,9.0,,4.291762459355334,,,,,,True
+2025-04-11,512091,Nibe Ordnance and Maritime Lim,4.59,4.59,4.59,4.59,2,9.0,,4.343314316836779,,,,,,True
+2025-04-23,512091,Nibe Ordnance and Maritime Lim,4.68,4.68,4.68,4.68,2,9.0,,4.397320346728885,,,,,,True
+2025-04-24,512091,Nibe Ordnance and Maritime Lim,4.77,4.77,4.77,4.77,1,4.0,,4.453442673304121,,,,,,True
+2025-05-07,512091,Nibe Ordnance and Maritime Lim,4.86,4.86,4.86,4.86,2,9.0,,4.511455486770042,,,,,,True
+2025-05-08,512091,Nibe Ordnance and Maritime Lim,4.95,4.95,4.95,4.95,2,9.0,,4.571197596570644,,,,,,True
+2025-05-09,512091,Nibe Ordnance and Maritime Lim,5.04,5.04,5.04,5.04,2,10.0,,4.63254696851366,,,,,,True
+2025-05-12,512091,Nibe Ordnance and Maritime Lim,5.14,5.14,5.14,5.14,2,10.0,,4.69666987877985,100.0,,,,,True
+2025-05-15,512091,Nibe Ordnance and Maritime Lim,5.24,5.24,5.24,5.24,1,5.0,,4.763253926416871,100.0,,,,,True
+2025-05-19,512091,Nibe Ordnance and Maritime Lim,5.34,5.34,5.34,5.34,1,5.0,,4.832054104065195,100.0,,,,,True
+2025-05-22,512091,Nibe Ordnance and Maritime Lim,5.44,5.44,5.44,5.44,1,5.0,,4.902872775075167,100.0,,,,,True
+2025-05-26,512091,Nibe Ordnance and Maritime Lim,5.54,5.54,5.54,5.54,1,5.0,,4.975546393977319,100.0,,,,,True
+2025-05-27,512091,Nibe Ordnance and Maritime Lim,5.65,5.65,5.65,5.65,1,5.0,,5.051056051272679,100.0,,,,,True
+2025-05-30,512091,Nibe Ordnance and Maritime Lim,5.76,5.76,5.76,5.76,1,5.0,4.840999999999999,5.12912197647074,100.0,,,,0.0,True
+2025-06-02,512091,Nibe Ordnance and Maritime Lim,5.87,5.87,5.87,5.87,1,5.0,4.9335,5.209508382972985,100.0,,,,0.0,True
+2025-06-04,512091,Nibe Ordnance and Maritime Lim,5.98,5.98,5.98,5.98,2,11.0,5.0275,5.292013606500053,100.0,,,,0.0,True
+2025-06-12,512091,Nibe Ordnance and Maritime Lim,6.09,6.09,6.09,6.09,1,6.0,5.123,5.376462858168196,100.0,,,,0.0,True
+2025-06-18,512091,Nibe Ordnance and Maritime Lim,6.21,6.21,6.21,6.21,2,12.0,5.2204999999999995,5.463750015147648,100.0,,,,0.0,True
