@@ -127,12 +127,12 @@ if __name__ == "__main__":
     driver = get_driver()
     get_nse_annoucement_data(driver)
 
-    if flag:
-        seen = set()
-        data = fetch_announcements(driver, seen)
-        save_bse_scrap_data_to_csv(data)
-    else:
-        get_nse_annoucement_data(driver)
+    # if flag:
+    #     seen = set()
+    #     data = fetch_announcements(driver, seen)
+    #     save_bse_scrap_data_to_csv(data)
+    # else:
+    #     get_nse_annoucement_data(driver)
 
     time.sleep(3)  # Ensure data is downloaded before processing
     # import pdb; pdb.set_trace()  # Debugging breakpoint
